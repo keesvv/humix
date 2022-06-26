@@ -3,8 +3,8 @@
 
 use panic_halt as _;
 
-mod vga;
-use vga::VgaBuffer;
+mod chr;
+use chr::vga::VgaBuffer;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {

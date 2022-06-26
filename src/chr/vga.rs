@@ -1,3 +1,6 @@
+use super::CharDevice;
+use core::fmt;
+
 pub const VGA_TEXT_W: u8 = 80;
 
 #[allow(dead_code)]
@@ -15,20 +18,33 @@ impl VgaBuffer {
             pos: 0,
         }
     }
+}
 
-    pub fn write(&mut self, b: &[u8]) {
-        for &b in b {
-            if b == 0x0a {
-                self.pos += VGA_TEXT_W as usize * 2 - self.pos;
-                continue;
-            }
-
-            unsafe {
-                *self.addr.offset(self.pos as isize) = b;
-                *self.addr.offset(self.pos as isize + 1) = 0xf;
-            }
-
-            self.pos += 2;
+impl CharDevice for VgaBuffer {
+    fn write(&mut self, b: u8) {
+        if b == 0x0a {
+            self.pos += VGA_TEXT_W as usize * 2 - self.pos;
+            return;
         }
+
+        unsafe {
+            *self.addr.offset(self.pos as isize) = b;
+            *self.addr.offset(self.pos as isize + 1) = 0xf;
+        }
+
+        self.pos += 2;
+    }
+
+    fn read(&mut self, _: u8) {
+        unimplemented!()
+    }
+}
+
+impl fmt::Write for VgaBuffer {
+    fn write_str(&mut self, s: &str) -> fmt::Result {
+        for (_, b) in s.chars().enumerate() {
+            self.write(b as u8);
+        }
+        Ok(())
     }
 }

@@ -6,16 +6,24 @@ pub const VGA_TEXT_W: u8 = 80;
 #[allow(dead_code)]
 pub const VGA_TEXT_H: u8 = 25;
 
+pub struct Pos(u8, u8);
+
+impl Pos {
+    pub fn get_offset(&self) -> usize {
+        (VGA_TEXT_W * self.1 * 2 + self.0 * 2).into()
+    }
+}
+
 pub struct VgaBuffer {
     addr: *mut u8,
-    pos: usize,
+    pos: Pos,
 }
 
 impl VgaBuffer {
     pub fn new(addr: usize) -> Self {
         Self {
             addr: addr as *mut u8,
-            pos: 0,
+            pos: Pos(0, 0),
         }
     }
 }
@@ -23,16 +31,19 @@ impl VgaBuffer {
 impl CharDevice for VgaBuffer {
     fn write(&mut self, b: u8) {
         if b == 0x0a {
-            self.pos += VGA_TEXT_W as usize * 2 - self.pos;
+            self.pos.0 = 0;
+            self.pos.1 += 1;
             return;
         }
 
+        let offset = self.pos.get_offset() as isize;
+
         unsafe {
-            *self.addr.offset(self.pos as isize) = b;
-            *self.addr.offset(self.pos as isize + 1) = 0xf;
+            *self.addr.offset(offset) = b;
+            *self.addr.offset(offset + 1) = 0xf;
         }
 
-        self.pos += 2;
+        self.pos.0 += 1;
     }
 
     fn read(&mut self, _: u8) {

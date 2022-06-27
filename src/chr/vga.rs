@@ -1,14 +1,16 @@
 use super::CharDevice;
 use core::fmt;
+use volatile::Volatile;
 
 pub const VGA_TEXT_W: u8 = 80;
 pub const VGA_TEXT_H: u8 = 25;
 
-pub struct Pos(u8, u8);
+#[derive(Clone, Copy)]
 pub struct Char(u8, u8);
+pub struct Pos(u8, u8);
 
 pub struct Buffer {
-    data: [[Char; VGA_TEXT_W as usize]; VGA_TEXT_H as usize],
+    data: [[Volatile<Char>; VGA_TEXT_W as usize]; VGA_TEXT_H as usize],
 }
 
 pub struct VgaBuffer {
@@ -33,7 +35,7 @@ impl CharDevice for VgaBuffer {
             return;
         }
 
-        self.buf.data[self.pos.1 as usize][self.pos.0 as usize] = Char(b, 0xf);
+        self.buf.data[self.pos.1 as usize][self.pos.0 as usize].write(Char(b, 0xf));
         self.pos.0 += 1;
     }
 

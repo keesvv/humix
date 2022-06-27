@@ -2,16 +2,17 @@
 #![no_main]
 #![feature(abi_x86_interrupt)]
 
-use core::panic::PanicInfo;
-
 mod chr;
 mod interrupt;
 mod kernel;
 
+use core::panic::PanicInfo;
+use interrupt::idt;
+
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     unsafe {
-        interrupt::initialize_idt();
+        idt::initialize(&mut idt::IDT);
     }
 
     kprint!("Humix is starting\nDebug information will be directed to COM1.\n");

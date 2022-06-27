@@ -3,4 +3,5 @@ pub trait CharDevice {
     fn read(&mut self, b: u8);
 }
 
+pub mod serial;
 pub mod vga;

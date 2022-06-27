@@ -1,3 +1,4 @@
+pub mod init;
 pub mod panic;
 
 #[macro_export]

@@ -1,5 +1,5 @@
 use super::CharDevice;
-use core::fmt;
+use core::fmt::{self, Write};
 use lazy_static::lazy_static;
 use spin::Mutex;
 use volatile::Volatile;
@@ -57,4 +57,8 @@ impl fmt::Write for VgaBuffer {
         }
         Ok(())
     }
+}
+
+pub fn print_fmt(args: fmt::Arguments) {
+    VGA_BUFFER.lock().write_fmt(args).unwrap();
 }

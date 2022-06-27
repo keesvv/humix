@@ -2,28 +2,25 @@ use super::CharDevice;
 use core::fmt;
 
 pub const VGA_TEXT_W: u8 = 80;
-
-#[allow(dead_code)]
 pub const VGA_TEXT_H: u8 = 25;
 
 pub struct Pos(u8, u8);
+pub struct Char(u8, u8);
 
-impl Pos {
-    pub fn get_offset(&self) -> usize {
-        (VGA_TEXT_W * self.1 * 2 + self.0 * 2).into()
-    }
+pub struct Buffer {
+    data: [[Char; VGA_TEXT_W as usize]; VGA_TEXT_H as usize],
 }
 
 pub struct VgaBuffer {
-    addr: *mut u8,
     pos: Pos,
+    buf: &'static mut Buffer,
 }
 
 impl VgaBuffer {
     pub fn new(addr: usize) -> Self {
         Self {
-            addr: addr as *mut u8,
             pos: Pos(0, 0),
+            buf: unsafe { &mut *(addr as *mut Buffer) },
         }
     }
 }
@@ -36,13 +33,7 @@ impl CharDevice for VgaBuffer {
             return;
         }
 
-        let offset = self.pos.get_offset() as isize;
-
-        unsafe {
-            *self.addr.offset(offset) = b;
-            *self.addr.offset(offset + 1) = 0xf;
-        }
-
+        self.buf.data[self.pos.1 as usize][self.pos.0 as usize] = Char(b, 0xf);
         self.pos.0 += 1;
     }
 

@@ -2,11 +2,11 @@
 #![no_main]
 #![feature(abi_x86_interrupt)]
 
+use core::panic::PanicInfo;
+
 mod chr;
 mod interrupt;
 mod kernel;
-
-use panic_halt as _;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
@@ -22,5 +22,11 @@ pub extern "C" fn _start() -> ! {
 
     kprint!("Recovered from CPU exception.\n");
 
+    loop {}
+}
+
+#[panic_handler]
+pub fn handle_panic(info: &PanicInfo) -> ! {
+    kprint!("!! KERNEL PANIC !!\n{:#}\nHalted.\n", info);
     loop {}
 }

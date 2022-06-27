@@ -1,6 +1,12 @@
 use super::CharDevice;
 use core::fmt;
+use lazy_static::lazy_static;
+use spin::Mutex;
 use volatile::Volatile;
+
+lazy_static! {
+    pub static ref VGA_BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer::new(0xb8000));
+}
 
 pub const VGA_TEXT_W: u8 = 80;
 pub const VGA_TEXT_H: u8 = 25;

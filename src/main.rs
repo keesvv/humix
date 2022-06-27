@@ -6,7 +6,6 @@ mod chr;
 mod interrupt;
 mod kernel;
 
-use core::panic::PanicInfo;
 use interrupt::idt;
 
 #[no_mangle]
@@ -23,11 +22,5 @@ pub extern "C" fn _start() -> ! {
 
     kprint!("Recovered from CPU exception.\n");
 
-    loop {}
-}
-
-#[panic_handler]
-pub fn handle_panic(info: &PanicInfo) -> ! {
-    kprint!("!! KERNEL PANIC !!\n{:#}\nHalted.\n", info);
     loop {}
 }

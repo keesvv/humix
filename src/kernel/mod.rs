@@ -1,5 +1,6 @@
 pub mod init;
 pub mod panic;
+pub mod power;
 
 use crate::chr::vga::VGA_BUFFER;
 use core::fmt::{self, Write};

@@ -1,7 +1,6 @@
+use crate::kprint;
 use pic8259::ChainedPics;
 use spin::Mutex;
-
-use crate::kprint;
 
 pub const PIC_OFFSETS: (u8, u8) = (32, 40);
 

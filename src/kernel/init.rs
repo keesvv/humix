@@ -1,10 +1,12 @@
-use crate::interrupt::idt;
+use crate::interrupt::{self, idt, pic};
 use crate::kprint;
 
 pub fn init() {
-    idt::initialize(unsafe { &mut idt::IDT });
+    kprint!("Humix is starting...\n");
 
-    kprint!("Humix is starting\nDebug information will be directed to COM1.\n");
+    idt::initialize(unsafe { &mut idt::IDT });
+    pic::initialize(&pic::PICS);
+    interrupt::enable();
 
     // Manually cause breakpoint exception for testing.
     // Will remove soon.

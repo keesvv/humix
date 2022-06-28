@@ -44,6 +44,13 @@ A human-first Unix approach.
 
 This list will be updated from time to time.
 
+## Known issues
+
+- The VGA text mode buffer does not scroll yet. After the maximum
+  of 25 lines in the buffer has been reached, further printed text
+  won't be shown on the screen and will overflow beyond the video
+  memory at some point.
+
 ## Author
 
 Kees van Voorthuizen ([@keesvv](https://github.com/keesvv))

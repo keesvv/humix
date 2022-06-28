@@ -4,13 +4,16 @@ pub mod power;
 
 use crate::chr::vga::VGA_BUFFER;
 use core::fmt::{self, Write};
+use x86_64::instructions::interrupts;
 
 pub fn log_fmt(args: fmt::Arguments) {
-    VGA_BUFFER
-        .lock()
-        // TODO: register uptime
-        .write_fmt(format_args!("[0.0000] {}", args))
-        .unwrap();
+    interrupts::without_interrupts(|| {
+        VGA_BUFFER
+            .lock()
+            // TODO: register uptime
+            .write_fmt(format_args!("[0.0000] {}", args))
+            .unwrap();
+    });
 }
 
 #[macro_export]

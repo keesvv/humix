@@ -3,7 +3,7 @@ use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
 pub static mut IDT: InterruptDescriptorTable = InterruptDescriptorTable::new();
 
-pub unsafe fn initialize(idt: &'static mut InterruptDescriptorTable) {
+pub fn initialize(idt: &'static mut InterruptDescriptorTable) {
     idt.breakpoint.set_handler_fn(breakpoint_handler);
     idt.double_fault.set_handler_fn(double_fault_handler);
     idt.load();

@@ -2,7 +2,7 @@ use crate::interrupt::idt;
 use crate::kprint;
 
 pub fn init() {
-    unsafe { idt::initialize(&mut idt::IDT) };
+    idt::initialize(unsafe { &mut idt::IDT });
 
     kprint!("Humix is starting\nDebug information will be directed to COM1.\n");
 

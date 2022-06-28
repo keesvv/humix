@@ -1,5 +1,5 @@
 use super::Interrupts;
-use crate::kprint;
+use crate::{interrupt::pic::PICS, kprint};
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
 pub static mut IDT: InterruptDescriptorTable = InterruptDescriptorTable::new();
@@ -21,5 +21,6 @@ extern "x86-interrupt" fn double_fault_handler(sf: InterruptStackFrame, _: u64) 
 }
 
 extern "x86-interrupt" fn timer_interrupt_handler(_: InterruptStackFrame) {
-    kprint!("Timer interrupt!\n");
+    unsafe { PICS.lock().notify_end_of_interrupt(Interrupts::Timer as u8) }
+    // TODO: handle/store timer data
 }

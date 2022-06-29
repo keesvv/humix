@@ -1,4 +1,6 @@
 use super::Interrupts;
+use crate::interrupt::timer::TIMER;
+use crate::interrupt::Interrupt;
 use crate::{interrupt::pic::PICS, kprint};
 use x86_64::instructions::port::PortReadOnly;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
@@ -22,9 +24,8 @@ extern "x86-interrupt" fn double_fault_handler(sf: InterruptStackFrame, _: u64) 
     panic!("double fault exception: {:#?}\n", sf);
 }
 
-extern "x86-interrupt" fn timer_interrupt_handler(_: InterruptStackFrame) {
-    kprint!("Timer IRQ!\n");
-    // TODO: handle/store timer data
+extern "x86-interrupt" fn timer_interrupt_handler(sf: InterruptStackFrame) {
+    TIMER.lock().handle(sf);
     unsafe { PICS.lock().notify_end_of_interrupt(Interrupts::Timer as u8) }
 }
 

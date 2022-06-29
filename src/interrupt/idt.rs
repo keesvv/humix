@@ -23,8 +23,9 @@ extern "x86-interrupt" fn double_fault_handler(sf: InterruptStackFrame, _: u64) 
 }
 
 extern "x86-interrupt" fn timer_interrupt_handler(_: InterruptStackFrame) {
-    unsafe { PICS.lock().notify_end_of_interrupt(Interrupts::Timer as u8) }
+    kprint!("Timer IRQ!\n");
     // TODO: handle/store timer data
+    unsafe { PICS.lock().notify_end_of_interrupt(Interrupts::Timer as u8) }
 }
 
 extern "x86-interrupt" fn keyboard_interrupt_handler(_: InterruptStackFrame) {

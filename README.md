@@ -28,18 +28,29 @@ A human-first Unix approach.
 - [x] Kernel buffer (kprint)
 - [x] CPU exception handling
 - [x] Kernel panics
-- [ ] IRQs
+- [x] IRQs
 - [ ] Serial driver
 - [ ] Memory management
+- [ ] Syscalls
 - [ ] Virtual filesystem
 - [ ] Filesystem (enlightenfs, efs)
 - [ ] Threading
 - [ ] Process management
+  - [ ] File descriptors
+  - [ ] Standard streams
+- [ ] Jails[^3]
+
+[^3]:
+    Being able to put restraints on programs and isolate them into
+    separate environments.
 
 ### Userspace
 
 - [ ] Init system
 - [ ] Shell (renaissance shell, rsh)
+- [ ] System administration utilities (su, useradd, etc)
+- [ ] Filesystem utilities (fsck, mkfs, etc)
+- [ ] Core utilities (ls, rm, etc)
 - [ ] Installer TUI
 
 This list will be updated from time to time.

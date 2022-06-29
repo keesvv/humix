@@ -20,6 +20,7 @@ impl Char {
     }
 }
 
+#[derive(Clone, Copy)]
 pub struct Pos(u8, u8);
 
 pub struct Buffer {
@@ -38,18 +39,44 @@ impl VgaBuffer {
             buf: unsafe { &mut *(addr as *mut Buffer) },
         }
     }
+
+    pub fn clear_line(&mut self, y: u8) {
+        for col in 0..(VGA_TEXT_W - 1) as usize {
+            self.buf.data[y as usize][col].write(Char::empty());
+        }
+    }
+
+    pub fn scroll(&mut self, lns: u8) {
+        for (i, ln) in self.buf.data.clone().iter().skip(lns.into()).enumerate() {
+            for (j, col) in ln.iter().enumerate() {
+                self.buf.data[i][j].write(col.read());
+            }
+        }
+
+        for ln in 0..lns {
+            self.clear_line(VGA_TEXT_H - 1 - ln)
+        }
+
+        self.pos.1 = VGA_TEXT_H - lns;
+    }
 }
 
 impl CharDevice for VgaBuffer {
     fn write(&mut self, b: u8) {
-        if b == 0x0a {
-            self.pos.0 = 0;
-            self.pos.1 += 1;
-            return;
+        if self.pos.1 >= VGA_TEXT_H {
+            self.scroll(1);
         }
 
-        self.buf.data[self.pos.1 as usize][self.pos.0 as usize].write(Char(b, 0xf));
-        self.pos.0 += 1;
+        match b {
+            0x0a => {
+                self.pos.0 = 0;
+                self.pos.1 += 1;
+            }
+            _ => {
+                self.buf.data[self.pos.1 as usize][self.pos.0 as usize].write(Char(b, 0xf));
+                self.pos.0 += 1;
+            }
+        }
     }
 
     fn read(&mut self, _: u8) {

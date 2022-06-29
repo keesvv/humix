@@ -46,6 +46,10 @@ This list will be updated from time to time.
 
 ## Known issues
 
+### To be solved
+
+### Solved
+
 - The VGA text mode buffer does not scroll yet. After the maximum
   of 25 lines in the buffer has been reached, further printed text
   won't be shown on the screen and will overflow beyond the video

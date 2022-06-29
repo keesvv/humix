@@ -8,6 +8,7 @@ use x86_64::instructions::interrupts;
 #[repr(u8)]
 pub enum Interrupts {
     Timer = PIC_OFFSETS.0,
+    Keyboard,
 }
 
 impl Interrupts {

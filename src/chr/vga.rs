@@ -13,6 +13,13 @@ pub const VGA_TEXT_H: u8 = 25;
 
 #[derive(Clone, Copy)]
 pub struct Char(u8, u8);
+
+impl Char {
+    pub fn empty() -> Self {
+        Self(0, 0)
+    }
+}
+
 pub struct Pos(u8, u8);
 
 pub struct Buffer {

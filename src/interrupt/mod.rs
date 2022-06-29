@@ -1,9 +1,10 @@
 pub mod idt;
 pub mod pic;
+pub mod timer;
 
 use crate::kprint;
 use pic::PIC_OFFSETS;
-use x86_64::instructions::interrupts;
+use x86_64::{instructions::interrupts, structures::idt::InterruptStackFrame};
 
 #[repr(u8)]
 pub enum Interrupts {
@@ -15,6 +16,10 @@ impl Interrupts {
     pub fn as_usize(self) -> usize {
         usize::from(self as u8)
     }
+}
+
+pub trait Interrupt {
+    fn handle(&mut self, sf: InterruptStackFrame);
 }
 
 #[inline(always)]

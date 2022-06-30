@@ -1,7 +1,10 @@
+use crate::chr::serial::COM1;
 use crate::interrupt::{self, idt, pic};
 use crate::kprint;
 
 pub fn init() {
+    COM1.lock().initialize();
+
     kprint!("Humix is starting...\n");
 
     idt::initialize(unsafe { &mut idt::IDT });

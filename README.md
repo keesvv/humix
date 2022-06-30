@@ -33,11 +33,15 @@ A human-first Unix approach.
 - [ ] Memory management
 - [ ] Syscalls
 - [ ] Virtual filesystem
+- [ ] Device filesystem (devfs)
 - [ ] Filesystem (enlightenfs, efs)
 - [ ] Threading
 - [ ] Process management
   - [ ] File descriptors
   - [ ] Standard streams
+- [ ] TTY
+- [ ] Sound infrastructure
+- [ ] Networking
 - [ ] Jails[^3]
 
 [^3]:
@@ -52,12 +56,18 @@ A human-first Unix approach.
 - [ ] Filesystem utilities (fsck, mkfs, etc)
 - [ ] Core utilities (ls, rm, etc)
 - [ ] Installer TUI
+- [ ] Display server
+- [ ] Window manager
+- [ ] Audio codecs
 
 This list will be updated from time to time.
 
 ## Known issues
 
 ### To be solved
+
+- The kernel is still very hardwired to the x86 platform. It should
+  be further abstracted to allow for portability.
 
 ### Solved
 

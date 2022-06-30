@@ -29,7 +29,7 @@ A human-first Unix approach.
 - [x] CPU exception handling
 - [x] Kernel panics
 - [x] IRQs
-- [ ] Serial driver
+- [x] Serial driver
 - [ ] Memory management
 - [ ] Syscalls
 - [ ] Virtual filesystem

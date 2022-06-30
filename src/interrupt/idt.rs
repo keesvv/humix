@@ -1,8 +1,8 @@
+use super::keyboard::KEYBOARD;
+use super::timer::TIMER;
 use super::Interrupts;
-use crate::interrupt::timer::TIMER;
 use crate::interrupt::Interrupt;
 use crate::{interrupt::pic::PICS, kprint};
-use x86_64::instructions::port::PortReadOnly;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
 pub static mut IDT: InterruptDescriptorTable = InterruptDescriptorTable::new();
@@ -29,11 +29,8 @@ extern "x86-interrupt" fn timer_interrupt_handler(sf: InterruptStackFrame) {
     unsafe { PICS.lock().notify_end_of_interrupt(Interrupts::Timer as u8) }
 }
 
-extern "x86-interrupt" fn keyboard_interrupt_handler(_: InterruptStackFrame) {
-    let mut port: PortReadOnly<u8> = PortReadOnly::new(0x60);
-    let code = unsafe { port.read() };
-
-    kprint!("Keyboard scancode received: {}\n", code);
+extern "x86-interrupt" fn keyboard_interrupt_handler(sf: InterruptStackFrame) {
+    KEYBOARD.lock().handle(sf);
     unsafe {
         PICS.lock()
             .notify_end_of_interrupt(Interrupts::Keyboard as u8)

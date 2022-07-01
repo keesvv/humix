@@ -40,7 +40,8 @@ A human-first Unix approach.
   - [ ] File descriptors
   - [ ] Standard streams
 - [ ] TTY
-- [ ] Sound infrastructure
+- [ ] Graphics
+- [ ] Sound
 - [ ] Networking
 - [ ] Jails[^3]
 

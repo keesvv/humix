@@ -2,12 +2,14 @@ use super::keyboard::KEYBOARD;
 use super::timer::TIMER;
 use super::{Interrupt, Interrupts};
 use crate::{interrupt::pic::PICS, kprint};
-use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
+use x86_64::registers::control::Cr2;
+use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame, PageFaultErrorCode};
 
 pub static mut IDT: InterruptDescriptorTable = InterruptDescriptorTable::new();
 
 pub fn initialize(idt: &'static mut InterruptDescriptorTable) {
     idt.breakpoint.set_handler_fn(breakpoint_handler);
+    idt.page_fault.set_handler_fn(page_fault_handler);
     idt.double_fault.set_handler_fn(double_fault_handler);
     idt[Interrupts::Timer.as_usize()].set_handler_fn(timer_interrupt_handler);
     idt[Interrupts::Keyboard.as_usize()].set_handler_fn(keyboard_interrupt_handler);
@@ -17,6 +19,17 @@ pub fn initialize(idt: &'static mut InterruptDescriptorTable) {
 
 extern "x86-interrupt" fn breakpoint_handler(sf: InterruptStackFrame) {
     kprint!("!! cpu exception: {:#?}\n", sf);
+}
+
+extern "x86-interrupt" fn page_fault_handler(sf: InterruptStackFrame, e: PageFaultErrorCode) {
+    kprint!(
+        "Page fault at {:#x} with code {:#x} ({:?}): {:#?}\n",
+        Cr2::read().as_u64(),
+        e,
+        e,
+        sf
+    );
+    loop {}
 }
 
 extern "x86-interrupt" fn double_fault_handler(sf: InterruptStackFrame, _: u64) -> ! {

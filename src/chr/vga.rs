@@ -40,10 +40,15 @@ impl VgaBuffer {
         }
     }
 
-    pub fn clear_line(&mut self, y: u8) {
+    pub fn fill_line(&mut self, y: u8, c: Char) {
         for col in 0..(VGA_TEXT_W - 1) as usize {
-            self.buf.data[y as usize][col].write(Char::empty());
+            self.buf.data[y as usize][col].write(c);
         }
+    }
+
+    #[inline(always)]
+    pub fn clear_line(&mut self, y: u8) {
+        self.fill_line(y, Char::empty());
     }
 
     pub fn scroll(&mut self, lns: u8) {

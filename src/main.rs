@@ -2,6 +2,7 @@
 #![no_main]
 #![feature(abi_x86_interrupt)]
 
+mod arch;
 mod chr;
 mod interrupt;
 mod kernel;

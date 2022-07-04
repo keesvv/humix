@@ -18,13 +18,15 @@ run-command = [
 ]
 
 [dependencies]
-bootloader = "0.9.8"
 volatile = "0.2.6"
 spin = "0.5.2"
-pic8259 = "0.10.1"
-x86_64 = "0.14.2"
-uart_16550 = "0.2.18"
 
 [dependencies.lazy_static]
 version = "1.4.0"
 features = ["spin_no_std"]
+
+[target.'cfg(target_arch = "x86_64")'.dependencies]
+bootloader = "0.9.8"
+pic8259 = "0.10.1"
+x86_64 = "0.14.2"
+uart_16550 = "0.2.18"

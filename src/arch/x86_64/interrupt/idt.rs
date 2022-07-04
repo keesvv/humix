@@ -1,7 +1,6 @@
 use super::keyboard::KEYBOARD;
 use super::timer::TIMER;
-use super::Interrupts;
-use crate::interrupt::Interrupt;
+use super::{Interrupt, Interrupts};
 use crate::{interrupt::pic::PICS, kprint};
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 

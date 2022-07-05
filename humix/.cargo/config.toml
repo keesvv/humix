@@ -7,3 +7,9 @@ build-std-features = ["compiler-builtins-mem"]
 
 [target.'cfg(target_os = "none")']
 runner = "bootimage runner"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"

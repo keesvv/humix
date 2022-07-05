@@ -20,6 +20,18 @@ A human-first Unix approach.
     This would allow for simulating the inner workings of the kernel in the
     browser. Could be a fun replacement for [webnix](https://github.com/keesvv/webnix).
 
+## Building
+
+### Prerequisites
+
+- Rust toolchain (`nightly`)
+  - `x86_64-unknown-none` target
+  - `rust-src` component
+  - `llvm-tools-preview` component
+- [`bootimage`](https://github.com/rust-osdev/bootimage) (for x86-64)
+
+`cd humix && cargo build`
+
 ## Roadmap
 
 ### Kernel
@@ -30,8 +42,8 @@ A human-first Unix approach.
 - [x] Kernel panics
 - [x] IRQs
 - [x] Serial driver
-- [ ] Memory management
 - [ ] Syscalls
+- [ ] Memory management
 - [ ] Virtual filesystem
 - [ ] Device filesystem (devfs)
 - [ ] Filesystem (enlightenfs, efs)
@@ -51,6 +63,7 @@ A human-first Unix approach.
 
 ### Userspace
 
+- [ ] Standard library
 - [ ] Init system
 - [ ] Shell (renaissance shell, rsh)
 - [ ] System administration utilities (su, useradd, etc)
@@ -69,13 +82,13 @@ This list will be updated from time to time.
 
 ### Solved
 
+- The kernel is still very hardwired to the x86 platform. It should
+  be further abstracted to allow for portability. (fixed in ce079bc)
+
 - The VGA text mode buffer does not scroll yet. After the maximum
   of 25 lines in the buffer has been reached, further printed text
   won't be shown on the screen and will overflow beyond the video
-  memory at some point.
-
-- The kernel is still very hardwired to the x86 platform. It should
-  be further abstracted to allow for portability.
+  memory at some point. (fixed in b8790de)
 
 ## Author
 

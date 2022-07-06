@@ -20,17 +20,28 @@ A human-first Unix approach.
     This would allow for simulating the inner workings of the kernel in the
     browser. Could be a fun replacement for [webnix](https://github.com/keesvv/webnix).
 
-## Building
+## Try it
 
-### Prerequisites
+### Building
+
+**Prerequisites**
 
 - Rust toolchain (`nightly`)
   - `x86_64-unknown-none` target
   - `rust-src` component
-  - `llvm-tools-preview` component
-- [`bootimage`](https://github.com/rust-osdev/bootimage) (for x86-64)
 
-`cd humix && cargo build`
+`cargo build -p humix`
+
+### Generating a bootable image for x86-64
+
+**Prerequisites**
+
+- All from [Building](#building)
+- Rust toolchain (`nightly`)
+  - `llvm-tools-preview` component
+- [`bootimage`](https://github.com/rust-osdev/bootimage)
+
+`cargo bootimage -p humix`
 
 ## Roadmap
 
